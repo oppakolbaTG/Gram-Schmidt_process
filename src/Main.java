@@ -42,42 +42,44 @@ public class Main {
         return normalized;
     }
 
-    static double[][] gram_schmidt(double[] v1, double[] v2){
-        if (v1.length != v2.length) {
-            throw new IllegalArgumentException("Векторы должны быть одинаковой длины");
-        }
+    static double[][] gramSchmidt(double[][] vectors) {
+        int n = vectors.length;
+        double[][] orthoBasis = new double[n][vectors[0].length];
 
-        double[] u1 = normalize(v1);
-        double projCoeff = scal(v2, u1);
-        double[] proj = mult_number(projCoeff, u1);
-        double[] u2 = sub(v2, proj);
-        u2 = normalize(u2);
-        return new double[][]{u1, u2};
+        for (int i = 0; i < n; i++) {
+            orthoBasis[i] = vectors[i].clone();
+            for (int j = 0; j < i; j++) {
+                double projectionCoeff = scal(vectors[i], orthoBasis[j]) / scal(orthoBasis[j], orthoBasis[j]);
+                double[] projection = mult_number(projectionCoeff, orthoBasis[j]);
+                orthoBasis[i] = sub(orthoBasis[i], projection);
+            }
+            // orthoBasis[i] = normalize(orthoBasis[i]);
+        }
+        return orthoBasis;
     }
 
-
-    public static void main (String[]args){
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите длину векторов:");
-        int length = scanner.nextInt();
-        double[] array1 = new double[length];
-        System.out.println("Введите элементы первого массива:");
-        for (int i = 0; i < length; i++) {
-            array1[i] = scanner.nextDouble();
+
+        System.out.println("Введите размерность векторов:");
+        int dim = scanner.nextInt();
+
+        System.out.println("Введите количество векторов:");
+        int n = scanner.nextInt();
+
+        double[][] vectors = new double[n][dim];
+        for (int i = 0; i < n; i++) {
+            System.out.println("Введите вектор №" + (i + 1) + ":");
+            for (int j = 0; j < dim; j++) {
+                vectors[i][j] = scanner.nextDouble();
+            }
         }
 
+        double[][] orthoBasis = gramSchmidt(vectors);
 
-        System.out.println("Введите элементы второго массива:");
-        double[] array2 = new double[length];
-        for (int i = 0; i < length; i++) {
-            array2[i] = scanner.nextDouble();
-        }
-        try {
-            double[][] result = gram_schmidt(array1, array2);
-            System.out.println("Ортогональная компонента первого вектора (u1): " + Arrays.toString(result[0]));
-            System.out.println("Ортогональная компонента второго вектора (u2): " + Arrays.toString(result[1]));
-        } catch (IllegalArgumentException e) {
-            System.out.println("Ошибка: " + e.getMessage());
+        System.out.println("\nОртогонализированный базис:");
+        for (int i = 0; i < orthoBasis.length; i++) {
+            System.out.println("u" + (i + 1) + ": " + Arrays.toString(orthoBasis[i]));
         }
     }
 }
