@@ -38,7 +38,7 @@ public class VectorRn {
         int size = vec.length;
         VectorRn mult = new VectorRn(size);
         for(int i = 0; i < vec.length; i++) {
-            mult.components[i] = num * vec[i];  // Исправлено обращение к components
+            mult.components[i] = num * vec[i];
         }
         return mult;
     }
