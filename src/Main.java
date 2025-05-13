@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-import static Misc.LinearSpace.genInSpan;
+import static Misc.LinearSpace.randGenInSpan;
 
 public class Main {
 
@@ -97,13 +97,42 @@ public class Main {
                             basis[i][j] = scanner.nextDouble();
                         }
                     }
-                    double[] randomVector = LinearSpace.genInSpan(basis);
-                    System.out.println("Сгенерированный вектор: " + Arrays.toString(randomVector));
-                    boolean isInSpan = LinearSpace.isInSpan(basis, randomVector);
-                    System.out.println("Принадлежит оболочке: " + isInSpan);
+                    System.out.println("Вы хотите сгенерировать случайные коэффициенты?\n1.Да\n2.Нет");
+                    int ans = scanner.nextInt();
+                    boolean otvet1 = false;
+                    while(!otvet1) {
+                        if (ans == 1) {
+                            double[] randomVector = LinearSpace.randGenInSpan(basis);
+                            System.out.println("Сгенерированный вектор: " + Arrays.toString(randomVector));
+                            boolean isInSpan = LinearSpace.isInSpan(basis, randomVector);
+                            System.out.println("Принадлежит оболочке: " + isInSpan);
+                            otvet1 = true;
+                            break;
+                        } else if (ans == 2) {
+                            double[] coefficients = new double[n2];
+                            System.out.println("Введите коэффициенты для линейной комбинации:");
+
+                            for (int i = 0; i < n2; i++) {
+                                System.out.print("Коэффициент для вектора " + (i + 1) + ": ");
+                                coefficients[i] = scanner.nextDouble();
+                            }
+                            double[] randomVector = LinearSpace.genInSpan(basis, coefficients);
+
+                            System.out.println("Сгенерированный вектор: " + Arrays.toString(randomVector));
+                            boolean isInSpan = LinearSpace.isInSpan(basis, randomVector);
+                            System.out.println("Принадлежит оболочке: " + isInSpan);
+                            otvet1 = true;
+                            break;
+
+                        } else {
+                            System.out.println("Неверный выбор. Введите 1 или 2.");
+                            return;
+                        }
+                    }
                     break;
 
-                    /// ///
+
+                /// ///
                 case 4:
                     System.out.println("Введите размерность векторов:");
                     int dim3 = scanner.nextInt();
@@ -146,6 +175,7 @@ public class Main {
                     }
                     LinearSpace space = new LinearSpace(vectors4);
                     space.printBasis();
+                    System.out.println(space);
 
                     break;
 

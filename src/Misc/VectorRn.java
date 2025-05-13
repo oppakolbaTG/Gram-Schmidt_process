@@ -11,7 +11,7 @@ public class VectorRn {
     }
 
     public VectorRn(int n){
-        if(n <= 0) throw new IllegalArgumentException("Размерность должна быть положительной");  // Добавлена проверка
+        if(n <= 0) throw new IllegalArgumentException("Размерность должна быть положительной");
         this.dimension = n;
         this.components = new double[n];
     }

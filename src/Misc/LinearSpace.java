@@ -80,11 +80,6 @@ public class LinearSpace {
         }
 
         int size = vectors[0].length;
-//        for(double[] matr : vectors){
-//            if(matr.length != size) {
-//                return false;
-//            }
-//        }
 
         double[][] matrix = new double[size][vectors.length + 1];
         for(int i = 0; i < size; i++){
@@ -150,7 +145,7 @@ public class LinearSpace {
     }
 
 
-    public static double[] genInSpan(double[][] vectors){
+    public static double[] randGenInSpan(double[][] vectors){
         int size = vectors[0].length;
 
         Random rand = new Random();
@@ -162,7 +157,21 @@ public class LinearSpace {
                 result[j] += coef * vectors[i][j];
             }
         }
+        return result;
+    }
 
+    public static double[] genInSpan(double[][] vectors, double[] coef){
+        if (vectors.length != coef.length) {
+        System.out.println("Количество коэффициентов должно соответствовать количеству векторов");
+        }
+        int size = vectors[0].length;
+
+        double[] result = new double[size];
+        for(int i = 0; i < vectors.length; i++) {
+            for(int j = 0; j < size; j++) {
+                result[j] += coef[i] * vectors[i][j];
+            }
+        }
         return result;
     }
 
@@ -190,4 +199,5 @@ public class LinearSpace {
         sb.append("]");
         return sb.toString();
     }
+
 }
